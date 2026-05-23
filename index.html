@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow — Elegant To-Do List</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Identity Services (GIS) SDK -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <!-- Authentication Landing Screen -->
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h2>Welcome to TaskFlow</h2>
+        <p>Organize your tasks, collaborate with your team, and stay on schedule.</p>
+      </div>
+
+      <div class="auth-body">
+        <!-- Google Sign-In Container (Real SDK UI) -->
+        <div id="google-signin-container" style="display: none; flex-direction: column; align-items: center; margin-bottom: 0.75rem;">
+          <div id="google-login-btn"></div>
+          <div class="divider"><span>OR</span></div>
+        </div>
+
+        <!-- Google Demo Button -->
+        <button id="btn-google-demo" class="btn btn-primary btn-block google-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
+          <span>Sign In with Google (Demo)</span>
+        </button>
+
+        <button id="btn-guest-login" class="btn btn-secondary btn-block">
+          <span>Continue as Guest</span>
+        </button>
+      </div>
+
+      <div class="auth-footer">
+        <button id="btn-dev-toggle" class="btn-text">Developer Settings</button>
+        <div id="dev-config" class="dev-config" style="display: none;">
+          <label for="google-client-id">Google Client ID</label>
+          <input type="text" id="google-client-id" placeholder="Paste your OAuth client ID here...">
+          <button id="btn-save-client-id" class="btn btn-secondary btn-block" style="margin-top: 0.5rem; font-size: 0.8rem; padding: 0.4rem;">Save & Enable Real Auth</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-container" id="app-container" style="display: none;">
+    <!-- Sidebar Left Column -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-area">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <div class="logo-text">
+            <h2>MindfulTask</h2>
+            <p class="subtitle">Productive Peace</p>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <button class="nav-item active" data-nav="all">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+          <span>Inbox</span>
+        </button>
+        <button class="nav-item" data-nav="today">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Today</span>
+        </button>
+        <button class="nav-item" data-nav="upcoming">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22V2"/><path d="M7 22V2"/><path d="M3 7h18"/><path d="M3 12h18"/><path d="M3 17h18"/></svg>
+          <span>Upcoming</span>
+        </button>
+        <button class="nav-item" data-nav="completed">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Completed</span>
+        </button>
+      </nav>
+
+      <button id="btn-sidebar-add-task" class="btn btn-primary btn-block btn-new-task">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>+ New Task</span>
+      </button>
+
+      <div class="sidebar-footer">
+        <button id="btn-sidebar-settings" class="sidebar-footer-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </button>
+        <button id="btn-sidebar-help" class="sidebar-footer-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Help</span>
+        </button>
+        
+        <div class="sidebar-profile-card" id="sidebar-profile-trigger">
+          <img id="sidebar-avatar-img" class="sidebar-avatar-img" src="" alt="Profile" style="display: none;">
+          <div id="sidebar-avatar-placeholder" class="sidebar-avatar-placeholder">U</div>
+          <div class="profile-info">
+            <span class="profile-name" id="sidebar-profile-name">Guest User</span>
+            <span class="profile-plan" id="sidebar-profile-plan">Free Plan</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Dashboard Right Column -->
+    <main class="main-panel">
+      <!-- Top Header Bar -->
+      <header class="main-top-bar">
+        <div class="breadcrumb" id="breadcrumb-title">Today's Focus</div>
+        
+        <div class="top-bar-right">
+          <!-- Search Bar -->
+          <div class="search-container">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="task-search-input" placeholder="Find a task..." autocomplete="off">
+          </div>
+
+          <!-- Team/People Button -->
+          <button id="btn-manage-people" class="btn-top-icon" title="Manage Team">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="btn-top-icon" aria-label="Toggle dark mode">
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </button>
+
+          <!-- Notification Bell Mock (Alert Trigger feedback) -->
+          <button class="btn-top-icon" id="btn-notifications-mock" title="Due Reminders status">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+
+          <!-- Developer Globe Button -->
+          <button class="btn-top-icon" id="btn-globe-settings" title="Developer settings & Auth config">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Greeting Banner -->
+      <section class="greeting-section">
+        <h1 class="greeting-title">Good Morning, <span id="user-greeting-name">Guest</span>.</h1>
+        <p class="greeting-subtitle">You have <strong id="greeting-task-count">0 tasks</strong> for today.</p>
+      </section>
+
+      <!-- Insights Widgets Grid -->
+      <section class="insights-grid">
+        <!-- Daily Momentum Card -->
+        <div class="insight-card momentum-card">
+          <div class="momentum-content">
+            <h3>Daily Momentum</h3>
+            <p id="momentum-description">You're almost there! Completing two more tasks will hit your daily goal.</p>
+            
+            <div class="momentum-stats">
+              <div class="momentum-stat">
+                <span class="stat-value" id="efficiency-value">0%</span>
+                <span class="stat-label">Efficiency</span>
+              </div>
+              <div class="momentum-stat">
+                <span class="stat-value" id="streak-value">12</span>
+                <span class="stat-label">Streak Days</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="momentum-visual">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+              <circle class="bg" cx="40" cy="40" r="32" fill="transparent" stroke-width="6"/>
+              <circle id="momentum-progress-circle" class="fg" cx="40" cy="40" r="32" fill="transparent" stroke-width="6" stroke-dasharray="201.06" stroke-dashoffset="201.06"/>
+            </svg>
+            <div class="percentage-label" id="momentum-percentage">0%</div>
+          </div>
+        </div>
+
+        <!-- Peak Focus Time Card -->
+        <div class="insight-card focus-time-card">
+          <div class="focus-header">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="focus-sun-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <h3>Peak Focus Time</h3>
+          </div>
+          <p>Your focus levels are highest between 10 AM and 12 PM. Consider moving complex tasks there.</p>
+          <button class="focus-insights-link" id="btn-focus-insights">VIEW INSIGHTS</button>
+        </div>
+      </section>
+
+      <!-- Category Filter Pills -->
+      <section class="categories-filter-section">
+        <div class="categories-pills" id="categories-pills">
+          <button class="category-pill active" data-category="all">All</button>
+          <button class="category-pill" data-category="work">Work</button>
+          <button class="category-pill" data-category="personal">Personal</button>
+          <button class="category-pill" data-category="shopping">Shopping</button>
+          <button class="category-pill" data-category="fitness">Fitness</button>
+        </div>
+      </section>
+
+      <!-- Tasks List Panel Area -->
+      <section class="tasks-section">
+        <!-- Empty State Container -->
+        <div id="empty-state" class="empty-state">
+          <div class="empty-illustration">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          </div>
+          <h3>All quiet in this view</h3>
+          <p>No tasks fit the selected filters. Add a new task to get started.</p>
+        </div>
+
+        <ul id="tasks-list" class="tasks-list"></ul>
+      </section>
+    </main>
+
+    <!-- Floating Action Button -->
+    <button id="btn-fab-add-task" class="fab-btn" title="Create New Task">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+  </div>
+
+  <!-- Manage People Modal Dialog -->
+  <dialog id="people-modal" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Manage Team</h2>
+        <button class="btn-close-modal" id="btn-close-people-modal" aria-label="Close modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="people-form" class="inline-form">
+          <div class="form-group flex-fill">
+            <label for="person-name">Add New Person</label>
+            <div class="input-with-button">
+              <input type="text" id="person-name" placeholder="Name (e.g. Alice)" required autocomplete="off">
+              <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+          </div>
+        </form>
+        
+        <div class="people-list-container">
+          <h3>Team Members</h3>
+          <ul id="people-list" class="people-list">
+            <!-- Dynamically populated -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Create Task Modal Dialog -->
+  <dialog id="create-task-modal" class="modal-dialog">
+    <div class="modal-content minimalist-modal">
+      <div class="modal-header">
+        <h2>Create New Task</h2>
+        <button class="btn-close-modal" id="btn-close-create-modal" aria-label="Close modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="task-form">
+          <div class="task-input-container">
+            <input type="text" id="task-title" class="minimal-task-input" placeholder="What needs to be done?" required autocomplete="off">
+          </div>
+          
+          <div class="modal-meta-row">
+            <div class="meta-selector select-pill">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pill-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <select id="task-assignee" title="Assign to">
+                <option value="">Assignee</option>
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+            
+            <div class="meta-selector select-pill">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pill-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <select id="task-category" title="Category">
+                <option value="">Category</option>
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
+                <option value="shopping">Shopping</option>
+                <option value="fitness">Fitness</option>
+              </select>
+            </div>
+
+            <div class="meta-presets">
+              <button type="button" id="btn-preset-today" class="btn-preset-pill">Today</button>
+              <button type="button" id="btn-preset-tomorrow" class="btn-preset-pill">Tomorrow</button>
+            </div>
+          </div>
+          
+          <div class="modal-dates-row">
+            <div class="date-picker-group">
+              <span class="date-label">Start Time</span>
+              <input type="datetime-local" id="task-start-date">
+            </div>
+            <div class="date-picker-group">
+              <span class="date-label">End / Due Time</span>
+              <input type="datetime-local" id="task-due-date">
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">Add Task</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Edit Task Modal Dialog -->
+  <dialog id="edit-task-modal" class="modal-dialog">
+    <div class="modal-content minimalist-modal">
+      <div class="modal-header">
+        <h2>Edit Task</h2>
+        <button class="btn-close-modal" id="btn-close-edit-modal" aria-label="Close modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-task-form">
+          <input type="hidden" id="edit-task-id">
+          
+          <div class="task-input-container">
+            <input type="text" id="edit-task-title" class="minimal-task-input" placeholder="What needs to be done?" required autocomplete="off">
+          </div>
+          
+          <div class="modal-meta-row">
+            <div class="meta-selector select-pill">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pill-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <select id="edit-task-assignee" title="Assignee">
+                <option value="">Assignee</option>
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+            
+            <div class="meta-selector select-pill">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pill-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <select id="edit-task-category" title="Category">
+                <option value="">Category</option>
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
+                <option value="shopping">Shopping</option>
+                <option value="fitness">Fitness</option>
+              </select>
+            </div>
+
+            <div class="meta-presets">
+              <button type="button" id="btn-edit-preset-today" class="btn-preset-pill">Today</button>
+              <button type="button" id="btn-edit-preset-tomorrow" class="btn-preset-pill">Tomorrow</button>
+            </div>
+          </div>
+          
+          <div class="modal-dates-row">
+            <div class="date-picker-group">
+              <span class="date-label">Start Time</span>
+              <input type="datetime-local" id="edit-task-start-date">
+            </div>
+            <div class="date-picker-group">
+              <span class="date-label">End / Due Time</span>
+              <input type="datetime-local" id="edit-task-due-date">
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Share Task Modal Dialog -->
+  <dialog id="share-task-modal" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Send Task</h2>
+        <button class="btn-close-modal" id="btn-close-share-modal" aria-label="Close modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="share-instructions">Send this task's details to the assigned team member:</p>
+        
+        <div class="share-preview-card">
+          <div id="share-preview-text" style="white-space: pre-wrap; font-size: 0.9rem; font-weight: 550; color: var(--text-main);"></div>
+        </div>
+
+        <div class="share-options-grid">
+          <button id="btn-share-copy" class="btn btn-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy Text</span>
+          </button>
+          
+          <button id="btn-share-whatsapp" class="btn btn-secondary" style="background-color: rgba(37, 211, 102, 0.1); color: rgb(37, 211, 102);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <span>WhatsApp</span>
+          </button>
+          
+          <button id="btn-share-email" class="btn btn-secondary" style="background-color: rgba(59, 130, 246, 0.1); color: rgb(59, 130, 246);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>Email</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Profile Settings Modal Dialog -->
+  <dialog id="profile-modal" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Your Profile</h2>
+        <button class="btn-close-modal" id="btn-close-profile-modal" aria-label="Close modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="profile-form">
+          <div class="avatar-editor-container">
+            <div class="avatar-editor-preview">
+              <img id="profile-avatar-preview" src="" alt="Avatar Preview" style="display: none;">
+              <div id="profile-avatar-placeholder" class="avatar-placeholder-large"></div>
+            </div>
+            <label for="profile-avatar-upload" class="btn btn-secondary btn-sm" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; margin-top: 0.5rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Upload Photo</span>
+            </label>
+            <input type="file" id="profile-avatar-upload" accept="image/*" style="display: none;">
+          </div>
+          
+          <div class="form-group">
+            <label for="profile-name">Full Name</label>
+            <input type="text" id="profile-name" required autocomplete="off">
+          </div>
+
+          <div class="form-group">
+            <label for="profile-email">Email Address</label>
+            <input type="email" id="profile-email" disabled>
+            <small style="color: var(--text-muted); font-size: 0.75rem;">Google Account Email</small>
+          </div>
+
+          <div class="form-group">
+            <label for="profile-bio">Bio</label>
+            <textarea id="profile-bio" rows="3" placeholder="Tell us about yourself..." style="font-family: var(--font-body); font-size: 0.95rem; padding: 0.75rem 1rem; border-radius: var(--border-radius-md); border: 1px solid var(--card-border); background: var(--bg-app); color: var(--text-main); outline: none; transition: border var(--transition-fast), box-shadow var(--transition-fast); resize: vertical;"></textarea>
+          </div>
+          
+          <div class="form-actions-row" style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">Save Profile</button>
+            <button type="button" id="btn-profile-signout" class="btn" style="background: var(--danger-light); color: var(--danger);">Sign Out</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Mock Google Sign In Modal Dialog -->
+  <dialog id="mock-google-modal" class="modal-dialog">
+    <div class="modal-content google-themed-modal" style="padding: 1.5rem;">
+      <div class="modal-header">
+        <div class="google-logo-header" style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-headings); font-weight: 600; font-size: 1.1rem;">
+          <svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
+          <span>Sign in with Google</span>
+        </div>
+        <button class="btn-close-modal" id="btn-close-mock-google-modal" aria-label="Close modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem;">
+        <p class="google-subtext" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Choose a mock account to continue to <strong style="color: var(--text-main);">TaskFlow</strong></p>
+        
+        <div class="mock-accounts-list" id="mock-accounts-list" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 180px; overflow-y: auto;">
+          <!-- Loaded dynamically -->
+        </div>
+        
+        <div class="divider" style="display: flex; align-items: center; text-align: center; margin: 0.75rem 0; font-size: 0.75rem; color: var(--text-muted); font-weight: 600;"><span style="flex-grow: 1; height: 1px; background: var(--card-border); margin-right: 0.5rem;"></span>OR ADD CUSTOM ACCOUNT<span style="flex-grow: 1; height: 1px; background: var(--card-border); margin-left: 0.5rem;"></span></div>
+        
+        <form id="mock-custom-account-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div class="form-group">
+            <label for="mock-custom-name">Name</label>
+            <input type="text" id="mock-custom-name" placeholder="Alex Johnson" required autocomplete="off" style="padding: 0.6rem 0.85rem; font-size: 0.9rem;">
+          </div>
+          <div class="form-group">
+            <label for="mock-custom-email">Email</label>
+            <input type="email" id="mock-custom-email" placeholder="alex@gmail.com" required autocomplete="off" style="padding: 0.6rem 0.85rem; font-size: 0.9rem;">
+          </div>
+          <button type="submit" class="btn btn-secondary btn-block" style="padding: 0.6rem; font-size: 0.9rem;">
+            Create & Sign In
+          </button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Notification Toasts Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Main JavaScript File -->
+  <script src="app.js"></script>
+</body>
+</html>
