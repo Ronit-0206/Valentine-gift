@@ -3,8 +3,12 @@ const supabaseUrl = 'https://bnnfpojqdjuznsfiwxkl.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJubmZwb2pxZGp1em5zZml3eGtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjQ3MDIsImV4cCI6MjA5NTE0MDcwMn0.x6H7-0Bq53g6LH3xnoAzn3lmsUHvHEAR9FwDGNbx8Hw';
 let supabase = null;
 
-if (window.supabase) {
-  supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+try {
+  if (window.supabase && typeof window.supabase.createClient === 'function') {
+    supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  }
+} catch (e) {
+  console.error('Failed to initialize Supabase client:', e);
 }
 
 // Helper: Save/Sync Profile to Supabase Database
@@ -323,31 +327,51 @@ function loadFromLocalStorage() {
   const storedTheme = localStorage.getItem('taskflow_theme');
   const storedUser = localStorage.getItem('taskflow_user');
 
-  if (storedUser) {
-    state.user = JSON.parse(storedUser);
-  } else {
-    state.user = {
-      isLoggedIn: false,
-      isGuest: false,
-      id: '',
-      name: '',
-      email: '',
-      avatar: '',
-      bio: '',
-      clientId: ''
-    };
+  // Initialize defaults
+  state.user = {
+    isLoggedIn: false,
+    isGuest: false,
+    id: '',
+    name: '',
+    email: '',
+    avatar: '',
+    bio: '',
+    clientId: ''
+  };
+  state.people = [...defaultPeople];
+  state.tasks = [...defaultTasks];
+
+  try {
+    if (storedUser && storedUser !== 'undefined') {
+      const parsedUser = JSON.parse(storedUser);
+      if (parsedUser && typeof parsedUser === 'object') {
+        state.user = { ...state.user, ...parsedUser };
+      }
+    }
+  } catch (e) {
+    console.error('Failed to parse user state from local storage:', e);
   }
 
-  if (storedPeople) {
-    state.people = JSON.parse(storedPeople);
-  } else {
-    state.people = [...defaultPeople];
+  try {
+    if (storedPeople && storedPeople !== 'undefined') {
+      const parsedPeople = JSON.parse(storedPeople);
+      if (Array.isArray(parsedPeople)) {
+        state.people = parsedPeople;
+      }
+    }
+  } catch (e) {
+    console.error('Failed to parse team roster from local storage:', e);
   }
 
-  if (storedTasks) {
-    state.tasks = JSON.parse(storedTasks);
-  } else {
-    state.tasks = [...defaultTasks];
+  try {
+    if (storedTasks && storedTasks !== 'undefined') {
+      const parsedTasks = JSON.parse(storedTasks);
+      if (Array.isArray(parsedTasks)) {
+        state.tasks = parsedTasks;
+      }
+    }
+  } catch (e) {
+    console.error('Failed to parse task feed from local storage:', e);
   }
 
   if (storedTheme) {
