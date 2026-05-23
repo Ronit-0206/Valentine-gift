@@ -1690,6 +1690,11 @@ if (btnSidebarHelp) {
 
 // Global Keyboard Shortcuts
 window.addEventListener('keydown', (e) => {
+  // Ignore shortcuts if the user is not logged in and not a guest (on auth screen)
+  if (!state.user.isLoggedIn && !state.user.isGuest) {
+    return;
+  }
+
   // Ignore shortcuts when user is typing in forms/inputs
   const activeEl = document.activeElement;
   if (activeEl && (
