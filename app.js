@@ -1,3 +1,44 @@
+// Supabase Integration Config
+const supabaseUrl = 'https://bnnfpojqdjuznsfiwxkl.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJubmZwb2pxZGp1em5zZml3eGtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjQ3MDIsImV4cCI6MjA5NTE0MDcwMn0.x6H7-0Bq53g6LH3xnoAzn3lmsUHvHEAR9FwDGNbx8Hw';
+let supabase = null;
+
+if (window.supabase) {
+  supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+}
+
+// Helper: Save/Sync Profile to Supabase Database
+async function saveProfileToSupabase(userData, isGuest = false) {
+  if (!supabase) {
+    console.warn('Supabase client is not initialized.');
+    return;
+  }
+
+  const profileData = {
+    id: userData.id || state.user.id || 'guest',
+    name: userData.name || state.user.name || 'Guest User',
+    email: userData.email || state.user.email || '',
+    avatar_url: userData.avatar || state.user.avatar || '',
+    bio: userData.bio || state.user.bio || '',
+    is_guest: isGuest || state.user.isGuest,
+    last_login: new Date().toISOString()
+  };
+
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .upsert(profileData, { onConflict: 'id' });
+
+    if (error) {
+      console.error('Error saving profile to Supabase:', error.message);
+    } else {
+      console.log('Successfully saved user profile to Supabase database.');
+    }
+  } catch (e) {
+    console.error('Unexpected Supabase operation error:', e);
+  }
+}
+
 // App State Management
 const state = {
   tasks: [],
@@ -1215,6 +1256,8 @@ function loginUser(userData, isGuest = false) {
   saveToLocalStorage();
   updateUIForAuthState();
   
+  saveProfileToSupabase(userData, isGuest);
+  
   showToast(
     'Welcome to TaskFlow',
     isGuest ? 'You are browsing as a guest.' : `Signed in as ${state.user.name}`,
@@ -1521,6 +1564,14 @@ if (profileForm) {
       syncUserToPeople();
       updateSidebarProfile();
       updateGreeting();
+      
+      saveProfileToSupabase({
+        id: state.user.id,
+        name: state.user.name,
+        email: state.user.email,
+        avatar: state.user.avatar,
+        bio: state.user.bio
+      }, state.user.isGuest);
       
       if (profileModal) profileModal.close();
       showToast('Profile Saved', 'Successfully updated your user profile details.', 'success');
