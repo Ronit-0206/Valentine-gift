@@ -2091,3 +2091,85 @@ select {
   border-color: var(--primary) !important;
   box-shadow: 0 0 0 2px var(--primary-light) !important;
 }
+
+/* ==========================================================================
+   Category Filter Pill Dots & Priority Badges Style
+   ========================================================================== */
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem !important;
+}
+
+.pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background var(--transition-fast);
+}
+
+.dot-all { background: var(--text-muted); }
+.dot-work { background: #10b981; }
+.dot-personal { background: #4f46e5; }
+.dot-shopping { background: #ec4899; }
+.dot-fitness { background: #f59e0b; }
+
+.category-pill.active .pill-dot {
+  background: currentColor !important;
+}
+
+/* Priority Badge styles inside metadata area */
+.priority-badge {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.18rem 0.5rem;
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.priority-badge .flag-icon {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.prio-high {
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.15);
+}
+.prio-high:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.prio-medium {
+  background: rgba(245, 158, 11, 0.08);
+  color: #d97706;
+  border-color: rgba(245, 158, 11, 0.15);
+}
+.prio-medium:hover {
+  background: rgba(245, 158, 11, 0.15);
+}
+
+[data-theme="dark"] .prio-medium {
+  color: #fbbf24;
+}
+
+.prio-low {
+  background: rgba(99, 102, 241, 0.08);
+  color: #4f46e5;
+  border-color: rgba(99, 102, 241, 0.15);
+}
+.prio-low:hover {
+  background: rgba(99, 102, 241, 0.15);
+}
+
+[data-theme="dark"] .prio-low {
+  color: #818cf8;
+}

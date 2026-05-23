@@ -199,11 +199,11 @@
       <!-- Category Filter Pills -->
       <section class="categories-filter-section">
         <div class="categories-pills" id="categories-pills">
-          <button class="category-pill active" data-category="all">All</button>
-          <button class="category-pill" data-category="work">Work</button>
-          <button class="category-pill" data-category="personal">Personal</button>
-          <button class="category-pill" data-category="shopping">Shopping</button>
-          <button class="category-pill" data-category="fitness">Fitness</button>
+          <button class="category-pill active" data-category="all"><span class="pill-dot dot-all"></span>All</button>
+          <button class="category-pill" data-category="work"><span class="pill-dot dot-work"></span>Work</button>
+          <button class="category-pill" data-category="personal"><span class="pill-dot dot-personal"></span>Personal</button>
+          <button class="category-pill" data-category="shopping"><span class="pill-dot dot-shopping"></span>Shopping</button>
+          <button class="category-pill" data-category="fitness"><span class="pill-dot dot-fitness"></span>Fitness</button>
         </div>
       </section>
 
@@ -293,6 +293,16 @@
               </select>
             </div>
 
+            <div class="meta-selector select-pill">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pill-icon"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+              <select id="task-priority" title="Priority">
+                <option value="medium">Priority</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+
             <div class="meta-presets">
               <button type="button" id="btn-preset-today" class="btn-preset-pill">Today</button>
               <button type="button" id="btn-preset-tomorrow" class="btn-preset-pill">Tomorrow</button>
@@ -350,6 +360,16 @@
                 <option value="personal">Personal</option>
                 <option value="shopping">Shopping</option>
                 <option value="fitness">Fitness</option>
+              </select>
+            </div>
+
+            <div class="meta-selector select-pill">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pill-icon"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+              <select id="edit-task-priority" title="Priority">
+                <option value="medium">Priority</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
               </select>
             </div>
 

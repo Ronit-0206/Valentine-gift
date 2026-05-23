@@ -69,6 +69,7 @@ const defaultTasks = [
     completed: false,
     assigneeId: 'p1',
     category: 'work',
+    priority: 'high',
     startDate: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString().slice(0, 16), // 1 hour ago
     dueDate: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString().slice(0, 16), // 2 hours from now
     createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
@@ -79,6 +80,7 @@ const defaultTasks = [
     completed: false,
     assigneeId: 'p2',
     category: 'work',
+    priority: 'medium',
     startDate: new Date(Date.now()).toISOString().slice(0, 16), // now
     dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 16), // 24 hours from now
     createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString()
@@ -89,6 +91,7 @@ const defaultTasks = [
     completed: true,
     assigneeId: 'p3',
     category: 'personal',
+    priority: 'low',
     startDate: '',
     dueDate: '',
     createdAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString()
@@ -520,6 +523,21 @@ function renderTasks() {
       categoryBadgeHtml = `<span class="task-category-badge cat-${task.category}">${task.category}</span>`;
     }
 
+    // Resolve priority badge
+    let priorityBadgeHtml = '';
+    const priority = task.priority || 'medium';
+    const flagSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flag-icon"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`;
+    let prioLabel = 'Medium';
+    if (priority === 'high') prioLabel = 'High';
+    else if (priority === 'low') prioLabel = 'Low';
+    
+    priorityBadgeHtml = `
+      <div class="meta-item priority-badge prio-${priority}" title="${prioLabel} Priority">
+        ${flagSvg}
+        <span>${prioLabel}</span>
+      </div>
+    `;
+
     li.innerHTML = `
       <!-- Status Checkbox -->
       <label class="checkbox-container">
@@ -532,6 +550,7 @@ function renderTasks() {
         <div class="task-title">${escapeHTML(task.title)}</div>
         <div class="task-meta">
           ${assigneeBadge}
+          ${priorityBadgeHtml}
           ${dateBadge}
           ${categoryBadgeHtml}
         </div>
@@ -712,7 +731,7 @@ function bindDragEvents(element) {
 // --- Core Actions & CRUD Mutations ---
 
 // Create Task
-function addTask(title, assigneeId, startDate, dueDate, category) {
+function addTask(title, assigneeId, startDate, dueDate, category, priority) {
   if (startDate && dueDate && new Date(startDate) > new Date(dueDate)) {
     showToast('Invalid Dates', 'Start Time cannot be later than End/Due Time.', 'danger');
     return;
@@ -724,6 +743,7 @@ function addTask(title, assigneeId, startDate, dueDate, category) {
     completed: false,
     assigneeId: assigneeId || '',
     category: category || '',
+    priority: priority || 'medium',
     startDate: startDate || '',
     dueDate: dueDate || '',
     createdAt: new Date().toISOString()
@@ -773,6 +793,7 @@ function openEditModal(id) {
     document.getElementById('edit-task-title').value = task.title;
     document.getElementById('edit-task-assignee').value = task.assigneeId || '';
     document.getElementById('edit-task-category').value = task.category || '';
+    document.getElementById('edit-task-priority').value = task.priority || 'medium';
     document.getElementById('edit-task-start-date').value = task.startDate || '';
     document.getElementById('edit-task-due-date').value = task.dueDate || '';
     editModal.showModal();
@@ -786,6 +807,7 @@ if (editForm) {
     const title = document.getElementById('edit-task-title').value;
     const assigneeId = document.getElementById('edit-task-assignee').value;
     const category = document.getElementById('edit-task-category').value;
+    const priority = document.getElementById('edit-task-priority').value;
     const startDate = document.getElementById('edit-task-start-date').value;
     const dueDate = document.getElementById('edit-task-due-date').value;
 
@@ -799,6 +821,7 @@ if (editForm) {
       task.title = title;
       task.assigneeId = assigneeId;
       task.category = category;
+      task.priority = priority;
       task.startDate = startDate;
       task.dueDate = dueDate;
       saveToLocalStorage();
@@ -1023,6 +1046,7 @@ if (taskForm) {
     const titleInput = document.getElementById('task-title');
     const assigneeSelect = document.getElementById('task-assignee');
     const categorySelect = document.getElementById('task-category');
+    const prioritySelect = document.getElementById('task-priority');
     const startInput = document.getElementById('task-start-date');
     const dateInput = document.getElementById('task-due-date');
     const createModal = document.getElementById('create-task-modal');
@@ -1030,16 +1054,18 @@ if (taskForm) {
     const title = titleInput.value.trim();
     const assigneeId = assigneeSelect.value;
     const category = categorySelect ? categorySelect.value : '';
+    const priority = prioritySelect ? prioritySelect.value : 'medium';
     const startDate = startInput.value;
     const dueDate = dateInput.value;
 
     if (title) {
       const originalLength = state.tasks.length;
-      addTask(title, assigneeId, startDate, dueDate, category);
+      addTask(title, assigneeId, startDate, dueDate, category, priority);
       if (state.tasks.length > originalLength) {
         titleInput.value = '';
         assigneeSelect.value = '';
         if (categorySelect) categorySelect.value = '';
+        if (prioritySelect) prioritySelect.value = 'medium';
         startInput.value = '';
         dateInput.value = '';
         if (createModal) createModal.close();
