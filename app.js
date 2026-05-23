@@ -774,11 +774,13 @@ function deleteTask(id) {
   const taskIndex = state.tasks.findIndex(t => t.id === id);
   if (taskIndex !== -1) {
     const taskName = state.tasks[taskIndex].title;
-    state.tasks.splice(taskIndex, 1);
-    state.notifiedTaskIds.delete(id);
-    saveToLocalStorage();
-    renderTasks();
-    showToast('Deleted', `Removed task: "${taskName}"`, 'danger');
+    if (confirm(`Are you sure you want to delete "${taskName}"?`)) {
+      state.tasks.splice(taskIndex, 1);
+      state.notifiedTaskIds.delete(id);
+      saveToLocalStorage();
+      renderTasks();
+      showToast('Deleted', `Removed task: "${taskName}"`, 'danger');
+    }
   }
 }
 
@@ -1631,9 +1633,63 @@ if (btnSidebarSettings && profileModal) {
 const btnSidebarHelp = document.getElementById('btn-sidebar-help');
 if (btnSidebarHelp) {
   btnSidebarHelp.addEventListener('click', () => {
-    showToast('Help Guide', 'Use the Sidebar to filter tasks, Category pills to drill down, or add tasks with the bottom-right FAB.', 'info');
+    showToast('Help Guide & Shortcuts', 'Use Sidebar / Categories to filter. <br>⌨️ <b>Shortcuts:</b><br>• <b>N / C</b>: New Task<br>• <b>F / /</b>: Search<br>• <b>T</b>: Toggle Theme<br>• <b>M</b>: Manage Team<br>• <b>P</b>: Profile Settings', 'info');
   });
 }
+
+// Global Keyboard Shortcuts
+window.addEventListener('keydown', (e) => {
+  // Ignore shortcuts when user is typing in forms/inputs
+  const activeEl = document.activeElement;
+  if (activeEl && (
+    activeEl.tagName === 'INPUT' ||
+    activeEl.tagName === 'TEXTAREA' ||
+    activeEl.tagName === 'SELECT' ||
+    activeEl.isContentEditable
+  )) {
+    return;
+  }
+
+  const key = e.key.toLowerCase();
+  
+  if (key === 'n' || key === 'c') {
+    const createModal = document.getElementById('create-task-modal');
+    if (createModal && !createModal.open) {
+      e.preventDefault();
+      createModal.showModal();
+    }
+  } else if (key === 'f' || key === '/') {
+    const searchInput = document.getElementById('task-search-input');
+    if (searchInput) {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  } else if (key === 't') {
+    e.preventDefault();
+    const newTheme = state.theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  } else if (key === 'm') {
+    const peopleModal = document.getElementById('people-modal');
+    if (peopleModal && !peopleModal.open) {
+      e.preventDefault();
+      renderPeopleList();
+      peopleModal.showModal();
+    }
+  } else if (key === 'p') {
+    const profileModal = document.getElementById('profile-modal');
+    if (profileModal && !profileModal.open) {
+      e.preventDefault();
+      const nameEl = document.getElementById('profile-name');
+      const emailEl = document.getElementById('profile-email');
+      const bioEl = document.getElementById('profile-bio');
+      if (nameEl) nameEl.value = state.user.name || 'Guest User';
+      if (emailEl) emailEl.value = state.user.email || '';
+      if (bioEl) bioEl.value = state.user.bio || '';
+      updateProfileAvatarPreview();
+      profileModal.showModal();
+    }
+  }
+});
 
 // Peak Focus Time Banner VIEW INSIGHTS button
 const btnFocusInsights = document.getElementById('btn-focus-insights');
