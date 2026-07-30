@@ -433,12 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${loc.protocol}//${loc.host}${loc.pathname}`;
   }
 
-  function getCodeShareUrl() {
-    const url = new URL(getBaseUrl());
-    url.searchParams.set('code', currentSecretCode);
-    return url.toString();
-  }
-
   function updateSendModalData() {
     const partnerGreeting = appData.name ? `Hey ${appData.name}! 💖` : `Hey sweetheart! 💖`;
     const siteUrl = getBaseUrl();
@@ -449,10 +443,9 @@ document.addEventListener('DOMContentLoaded', () => {
       btnWhatsappCode.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappMsg)}`;
     }
 
-    // UPDATE QR CODE IMAGE SRC
-    const targetUrl = getCodeShareUrl();
+    // QR CODE OPENS ONLY THE WEBSITE HOME PAGE (http://localhost:3000)
     if (qrCodeImg) {
-      qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(targetUrl)}&color=ff0054&bgcolor=ffffff`;
+      qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(siteUrl)}&color=ff0054&bgcolor=ffffff`;
     }
   }
 
