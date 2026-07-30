@@ -532,7 +532,12 @@ body {
   overflow-y: auto;
 }
 
-.modal-backdrop.hidden { opacity: 0; pointer-events: none; }
+.modal-backdrop.hidden {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
 
 .modal-card {
   background: #1f0814;

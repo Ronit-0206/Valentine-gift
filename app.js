@@ -321,7 +321,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {}
   }
 
-  btnMusic.addEventListener('click', () => {
+  btnMusic.addEventListener('click', (e) => {
+    e.stopPropagation();
     soundEnabled = !soundEnabled;
     musicIcon.className = soundEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
     showToast(soundEnabled ? 'Sound unmuted 🎵' : 'Sound muted 🔇');
@@ -377,18 +378,23 @@ document.addEventListener('DOMContentLoaded', () => {
     btnYes.style.transform = `scale(${yesScale})`;
   }
 
-  ['mouseenter', 'mouseover', 'touchstart', 'pointerdown', 'click'].forEach(evt => {
+  ['mouseenter', 'mouseover', 'touchstart', 'pointerdown'].forEach(evt => {
     btnNo.addEventListener(evt, dodgeNoButton, { passive: false });
   });
 
   /* ==========================================================================
      5. CLICKING YES OPENS THE "ENTER SECRET PASSCODE" MODAL WINDOW
      ========================================================================== */
-  btnYes.addEventListener('click', () => {
+  function handleYesClick(e) {
+    if (e) {
+      e.stopPropagation();
+    }
     initAudio();
     playPopSound();
     openEnterCodeModal();
-  });
+  }
+
+  btnYes.addEventListener('click', handleYesClick);
 
   function revealCelebrationCard() {
     playCelebrationFanfare();
@@ -443,7 +449,6 @@ document.addEventListener('DOMContentLoaded', () => {
       btnWhatsappCode.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappMsg)}`;
     }
 
-    // QR CODE OPENS ONLY THE WEBSITE HOME PAGE (http://localhost:3000)
     if (qrCodeImg) {
       qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(siteUrl)}&color=ff0054&bgcolor=ffffff`;
     }
@@ -451,7 +456,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnRegenCode) btnRegenCode.addEventListener('click', generateRandomCode);
 
-  // QR Code Toggle
   if (btnToggleQr) {
     btnToggleQr.addEventListener('click', () => {
       const isHidden = qrCodeContainer.classList.contains('hidden');
@@ -480,7 +484,8 @@ document.addEventListener('DOMContentLoaded', () => {
     disableBodyScroll();
   }
 
-  btnOpenSendCard.addEventListener('click', openSendModal);
+  if (btnOpenSendCard) btnOpenSendCard.addEventListener('click', openSendModal);
+  
   btnCloseSendModal.addEventListener('click', () => {
     sendModal.classList.add('hidden');
     if (qrCodeContainer) qrCodeContainer.classList.add('hidden');
