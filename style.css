@@ -1035,17 +1035,38 @@ body {
 
 /* Responsive Adjustments */
 @media (max-width: 600px) {
-  .romantic-heading { font-size: 2.2rem; }
-  .subtitle { font-size: 0.92rem; margin-bottom: 24px; }
-  .mascot-wrapper { width: 110px; height: 110px; }
-  .buttons-container { flex-direction: column; width: 100%; gap: 12px; }
-  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+  .romantic-heading { font-size: 2.1rem; }
+  .subtitle { font-size: 0.9rem; margin-bottom: 20px; }
+  .mascot-wrapper { width: 105px; height: 105px; margin-bottom: 10px; }
+  
+  /* Compact & Sleek Buttons on Mobile */
+  .buttons-container {
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    gap: 12px;
+    max-width: 320px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    padding: 12px 20px;
+    font-size: 0.92rem;
+    min-height: 46px;
+    border-radius: 40px;
+    gap: 6px;
+  }
+  
+  .btn-primary {
+    box-shadow: 0 6px 20px rgba(255, 0, 84, 0.4);
+  }
+  
   .top-bar { top: 12px; right: 12px; }
   .date-details-box { padding: 18px 20px; }
 }
 
 @media (max-height: 660px) {
-  .mascot-wrapper { width: 90px; height: 90px; margin-bottom: 6px; }
-  .romantic-heading { font-size: 2rem; margin-bottom: 4px; }
-  .subtitle { margin-bottom: 14px; }
+  .mascot-wrapper { width: 85px; height: 85px; margin-bottom: 6px; }
+  .romantic-heading { font-size: 1.9rem; margin-bottom: 4px; }
+  .subtitle { margin-bottom: 12px; font-size: 0.85rem; }
+  .btn-primary, .btn-secondary { padding: 10px 18px; min-height: 42px; font-size: 0.88rem; }
 }
