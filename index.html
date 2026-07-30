@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Will You Be My Valentine? 💖</title>
   <meta name="description" content="A special romantic Valentine request with floating heart balloons and fun interactive surprise!">
   
@@ -113,10 +113,10 @@
       </div>
     </div>
 
-    <!-- Success / Date Card (Revealed after entering secret code) -->
+    <!-- Success / Date Card (Clean, Opulent, Pure Romance - No Share Buttons) -->
     <div id="success-card" class="glass-card success-mode hidden">
-      <div class="success-badge">
-        <i class="fa-solid fa-champagne-glasses"></i> IT'S A DATE! 🎉
+      <div class="success-badge glow-badge">
+        <i class="fa-solid fa-crown"></i> OFFICIAL DATE CONFIRMED 🎉
       </div>
 
       <div class="celebration-icon">
@@ -124,14 +124,14 @@
         <i class="fa-solid fa-heart-circle-check"></i>
       </div>
 
-      <!-- Personalized Celebration Heading -->
+      <!-- Grand Personalized Celebration Heading -->
       <h1 class="romantic-heading success-title" id="success-title">
         I knew you would say YES! <span class="heart-emoji">💖✨</span>
       </h1>
-      <p class="success-subtext" id="success-subtext">You've made me the happiest person ever! Here is our date plan:</p>
+      <p class="success-subtext" id="success-subtext">Get ready for an unforgettable romantic date! Here are your exclusive details:</p>
 
-      <!-- Date Details Container -->
-      <div class="date-details-box">
+      <!-- Date Details Container (Opulent Glass Card) -->
+      <div class="date-details-box royal-date-box">
         <div class="detail-item">
           <div class="detail-icon"><i class="fa-solid fa-hotel"></i></div>
           <div class="detail-content">
@@ -145,7 +145,7 @@
         <div class="detail-item">
           <div class="detail-icon"><i class="fa-solid fa-clock"></i></div>
           <div class="detail-content">
-            <span class="detail-label">TIME</span>
+            <span class="detail-label">DATE & TIME</span>
             <strong class="detail-value" id="res-time">7:30 PM Today</strong>
           </div>
         </div>
@@ -155,17 +155,10 @@
         <div class="detail-item">
           <div class="detail-icon"><i class="fa-solid fa-rose"></i></div>
           <div class="detail-content">
-            <span class="detail-label">SPECIAL NOTE</span>
+            <span class="detail-label">SPECIAL NOTE FOR YOU</span>
             <p class="detail-note" id="res-note">Dress up gorgeous! I can't wait to see your cute smile today. 🥂🌹</p>
           </div>
         </div>
-      </div>
-
-      <!-- Action Footer -->
-      <div class="success-actions">
-        <button id="btn-open-send-card" class="btn-primary btn-small">
-          <i class="fa-solid fa-paper-plane"></i> Share / Send Invite
-        </button>
       </div>
     </div>
 
@@ -193,7 +186,7 @@
     </div>
   </div>
 
-  <!-- Send Invitation Modal (WhatsApp + QR Code + Copy Links) -->
+  <!-- Send Invitation Modal -->
   <div id="send-modal" class="modal-backdrop hidden">
     <div class="modal-card">
       <div class="modal-header">
