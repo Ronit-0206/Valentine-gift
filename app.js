@@ -517,6 +517,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Backdrop Backdrop Click to Close
+  [customizerModal, sendModal, enterCodeModal, noteModal, lightboxModal].forEach(modal => {
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+          enableBodyScroll();
+        }
+      });
+    }
+  });
+
   function disableBodyScroll() {
     document.body.style.overflow = 'hidden';
   }
@@ -540,18 +552,29 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${loc.protocol}//${loc.host}${loc.pathname}`;
   }
 
+  function getCodeShareUrl() {
+    const url = new URL(getBaseUrl());
+    url.searchParams.set('code', currentSecretCode);
+    if (appData.name) url.searchParams.set('name', appData.name);
+    if (appData.hotel) url.searchParams.set('hotel', appData.hotel);
+    if (appData.time) url.searchParams.set('time', appData.time);
+    if (appData.note) url.searchParams.set('note', appData.note);
+    return url.toString();
+  }
+
   function updateSendModalData() {
     const partnerGreeting = appData.name ? `Hey ${appData.name}! 💖` : `Hey sweetheart! 💖`;
-    const siteUrl = getBaseUrl();
+    const shareUrl = getCodeShareUrl();
+    const cleanUrl = getBaseUrl();
     
-    const whatsappMsg = `${partnerGreeting} I created a secret romantic surprise for you! ✨\n\nYour Secret Passcode: *${currentSecretCode}*\nOpen link & enter code: ${siteUrl}`;
+    const whatsappMsg = `${partnerGreeting} I created a secret romantic surprise for you! ✨\n\nYour Secret Passcode: *${currentSecretCode}*\nOpen link & enter code: ${cleanUrl}`;
     
     if (btnWhatsappCode) {
       btnWhatsappCode.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappMsg)}`;
     }
 
     if (qrCodeImg) {
-      qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(siteUrl)}&color=ff0054&bgcolor=ffffff`;
+      qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(cleanUrl)}&color=ff0054&bgcolor=ffffff`;
     }
   }
 
