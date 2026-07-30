@@ -37,20 +37,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const sendModal = document.getElementById('send-modal');
   const enterCodeModal = document.getElementById('enter-code-modal');
   const noteModal = document.getElementById('note-modal');
+  const lightboxModal = document.getElementById('lightbox-modal');
 
   const btnCloseModal = document.getElementById('btn-close-modal');
   const btnCloseSendModal = document.getElementById('btn-close-send-modal');
   const btnCloseCodeModal = document.getElementById('btn-close-code-modal');
   const btnCloseNoteModal = document.getElementById('btn-close-note-modal');
   const btnCloseNoteFooter = document.getElementById('btn-close-note-footer');
+  const btnCloseLightbox = document.getElementById('btn-close-lightbox');
 
   const btnSaveCustom = document.getElementById('btn-save-custom');
   const btnEditFromSend = document.getElementById('btn-edit-from-send');
 
-  // Love Letter Note Modal Elements
+  // Love Letter Note & Lightbox Elements
   const itemSpecialNote = document.getElementById('item-special-note');
   const modalNoteText = document.getElementById('modal-note-text');
   const modalNoteSig = document.getElementById('modal-note-sig');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCaption = document.getElementById('lightbox-caption');
 
   // Share Input & QR Elements
   const generatedSecretCode = document.getElementById('generated-secret-code');
@@ -477,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     7. LOVE LETTER NOTE MODAL & MANAGEMENT
+     7. LOVE LETTER NOTE & LIGHTBOX PHOTO PREVIEW MODALS
      ========================================================================== */
   if (itemSpecialNote) {
     itemSpecialNote.addEventListener('click', () => {
@@ -497,6 +501,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnCloseNoteModal) btnCloseNoteModal.addEventListener('click', closeNoteModal);
   if (btnCloseNoteFooter) btnCloseNoteFooter.addEventListener('click', closeNoteModal);
+
+  function openLightbox(src, caption) {
+    playPopSound();
+    lightboxImg.src = src;
+    lightboxCaption.textContent = caption || 'Memory 💖';
+    lightboxModal.classList.remove('hidden');
+    disableBodyScroll();
+  }
+
+  if (btnCloseLightbox) {
+    btnCloseLightbox.addEventListener('click', () => {
+      lightboxModal.classList.add('hidden');
+      enableBodyScroll();
+    });
+  }
 
   function disableBodyScroll() {
     document.body.style.overflow = 'hidden';
@@ -736,6 +755,11 @@ document.addEventListener('DOMContentLoaded', () => {
         <img src="${src}" alt="Memory ${idx + 1}">
         <div class="polaroid-caption-sm">Memory #${idx + 1} 💖</div>
       `;
+
+      item.addEventListener('click', () => {
+        openLightbox(src, `Memory #${idx + 1} 💖`);
+      });
+
       floatingPolaroidsBg.appendChild(item);
     });
   }

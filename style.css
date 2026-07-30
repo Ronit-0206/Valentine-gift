@@ -611,6 +611,52 @@ body {
   display: block;
 }
 
+/* Lightbox Photo Preview Modal */
+.lightbox-card {
+  background: rgba(15, 2, 8, 0.95) !important;
+  border: 1px solid rgba(255, 112, 166, 0.5) !important;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.95), 0 0 60px rgba(255, 0, 84, 0.4) !important;
+  border-radius: 24px !important;
+  max-width: 520px !important;
+  padding: 16px !important;
+  text-align: center;
+  position: relative;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.15);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.lightbox-body img {
+  width: 100%;
+  max-height: 60dvh;
+  object-fit: contain;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  display: block;
+  margin: 0 auto;
+}
+
+.lightbox-caption {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: var(--accent-soft-pink);
+  margin-top: 14px;
+  font-weight: 700;
+}
+
 .success-actions { display: none; }
 
 /* Modals System */
