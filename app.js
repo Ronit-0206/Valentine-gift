@@ -29,6 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnMusic = document.getElementById('btn-music');
   const musicIcon = document.getElementById('music-icon');
   const btnOpenSendCard = document.getElementById('btn-open-send-card');
+  const btnCreateInvitationTop = document.getElementById('btn-create-invitation-top');
+  const btnCreateInvitationFooter = document.getElementById('btn-create-invitation-footer');
 
   // Modals
   const customizerModal = document.getElementById('customizer-modal');
@@ -403,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     6. GENERATE LINK vs SECRET CODE SYSTEM & MODALS MANAGEMENT
+     6. CREATE INVITATION FOR NEW USERS & MODAL MANAGEMENT
      ========================================================================== */
   function disableBodyScroll() {
     document.body.style.overflow = 'hidden';
@@ -441,7 +443,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnRegenCode) btnRegenCode.addEventListener('click', generateRandomCode);
 
-  // Copy Handlers
   if (btnCopyDirectLink) {
     btnCopyDirectLink.addEventListener('click', () => copyToClipboard(getBaseUrl(), 'Web link copied to clipboard! 📋'));
   }
@@ -476,6 +477,10 @@ document.addEventListener('DOMContentLoaded', () => {
     customizerModal.classList.remove('hidden');
     disableBodyScroll();
   }
+
+  // CREATE INVITATION BUTTON HANDLERS FOR NEW USERS
+  if (btnCreateInvitationTop) btnCreateInvitationTop.addEventListener('click', openCustomizer);
+  if (btnCreateInvitationFooter) btnCreateInvitationFooter.addEventListener('click', openCustomizer);
 
   btnCloseModal.addEventListener('click', () => {
     customizerModal.classList.add('hidden');

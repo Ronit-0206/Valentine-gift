@@ -29,6 +29,10 @@
 
   <!-- Top Action Bar -->
   <header class="top-bar">
+    <button id="btn-create-invitation-top" class="icon-btn highlight-btn" title="Create Your Invitation" aria-label="Create Your Invitation">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+      <span>Create Invitation</span>
+    </button>
     <button id="btn-music" class="icon-btn sound-only-btn" title="Toggle Sound" aria-label="Toggle Sound">
       <i class="fa-solid fa-volume-high" id="music-icon"></i>
     </button>
@@ -99,6 +103,13 @@
 
       <div class="hint-text">
         <i class="fa-solid fa-circle-info"></i> Tip: Pick your answer wisely! 😉
+      </div>
+
+      <!-- Creator Option Link on Home Page -->
+      <div class="creator-footer-link">
+        <button id="btn-create-invitation-footer" class="text-link-btn">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Want to create your own invitation? Click here!
+        </button>
       </div>
     </div>
 
@@ -182,7 +193,7 @@
     </div>
   </div>
 
-  <!-- Send Invitation Modal (WhatsApp + Copy Web Link + Copy Code) -->
+  <!-- Send Invitation Modal -->
   <div id="send-modal" class="modal-backdrop hidden">
     <div class="modal-card">
       <div class="modal-header">
@@ -220,11 +231,11 @@
     </div>
   </div>
 
-  <!-- Customizer Modal -->
+  <!-- Customizer Modal for New Users -->
   <div id="customizer-modal" class="modal-backdrop hidden">
     <div class="modal-card">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Customize Invitation Details</h3>
+        <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Create Your Invitation</h3>
         <button id="btn-close-modal" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
@@ -252,7 +263,7 @@
 
       <div class="modal-footer">
         <button id="btn-save-custom" class="btn-primary full-width">
-          <i class="fa-solid fa-paper-plane"></i> Save & Open Send Options
+          <i class="fa-solid fa-paper-plane"></i> Save & Generate Secret Passcode
         </button>
       </div>
     </div>
