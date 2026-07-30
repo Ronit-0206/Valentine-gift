@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const resHotel = document.getElementById('res-hotel');
   const resTime = document.getElementById('res-time');
-  const resNote = document.getElementById('res-note');
   const floatingPolaroidsBg = document.getElementById('floating-polaroids-bg');
 
   // Top Bar & Controls
@@ -37,13 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const customizerModal = document.getElementById('customizer-modal');
   const sendModal = document.getElementById('send-modal');
   const enterCodeModal = document.getElementById('enter-code-modal');
+  const noteModal = document.getElementById('note-modal');
 
   const btnCloseModal = document.getElementById('btn-close-modal');
   const btnCloseSendModal = document.getElementById('btn-close-send-modal');
   const btnCloseCodeModal = document.getElementById('btn-close-code-modal');
+  const btnCloseNoteModal = document.getElementById('btn-close-note-modal');
+  const btnCloseNoteFooter = document.getElementById('btn-close-note-footer');
 
   const btnSaveCustom = document.getElementById('btn-save-custom');
   const btnEditFromSend = document.getElementById('btn-edit-from-send');
+
+  // Love Letter Note Modal Elements
+  const itemSpecialNote = document.getElementById('item-special-note');
+  const modalNoteText = document.getElementById('modal-note-text');
+  const modalNoteSig = document.getElementById('modal-note-sig');
 
   // Share Input & QR Elements
   const generatedSecretCode = document.getElementById('generated-secret-code');
@@ -441,8 +448,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     7. CREATE INVITATION, QR CODE GENERATOR & MODAL MANAGEMENT
+     7. LOVE LETTER NOTE MODAL & MANAGEMENT
      ========================================================================== */
+  if (itemSpecialNote) {
+    itemSpecialNote.addEventListener('click', () => {
+      playPopSound();
+      modalNoteText.textContent = appData.note || "Dress up gorgeous! I can't wait to see your cute smile today. 🥂🌹";
+      modalNoteSig.textContent = appData.name ? `Forever Yours, ${appData.name} 💖` : `Forever Yours 💖`;
+      noteModal.classList.remove('hidden');
+      disableBodyScroll();
+    });
+  }
+
+  function closeNoteModal() {
+    noteModal.classList.add('hidden');
+    enableBodyScroll();
+  }
+
+  if (btnCloseNoteModal) btnCloseNoteModal.addEventListener('click', closeNoteModal);
+  if (btnCloseNoteFooter) btnCloseNoteFooter.addEventListener('click', closeNoteModal);
+
   function disableBodyScroll() {
     document.body.style.overflow = 'hidden';
   }
@@ -635,7 +660,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     resHotel.textContent = appData.hotel;
     resTime.textContent = appData.time;
-    resNote.textContent = appData.note;
 
     inputName.value = appData.name;
     inputHotel.value = appData.hotel;
