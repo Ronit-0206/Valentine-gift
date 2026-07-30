@@ -44,12 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSaveCustom = document.getElementById('btn-save-custom');
   const btnEditFromSend = document.getElementById('btn-edit-from-send');
 
-  // Share Input Elements
+  // Share Input & QR Elements
   const generatedSecretCode = document.getElementById('generated-secret-code');
   const btnCopyDirectLink = document.getElementById('btn-copy-direct-link');
   const btnCopyCodeOnly = document.getElementById('btn-copy-code-only');
   const btnRegenCode = document.getElementById('btn-regen-code');
   const btnWhatsappCode = document.getElementById('btn-whatsapp-code');
+  const btnToggleQr = document.getElementById('btn-toggle-qr');
+  const qrCodeContainer = document.getElementById('qr-code-container');
+  const qrCodeImg = document.getElementById('qr-code-img');
 
   // Form Inputs
   const inputName = document.getElementById('input-name');
@@ -405,7 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     6. CREATE INVITATION FOR NEW USERS & MODAL MANAGEMENT
+     6. CREATE INVITATION, QR CODE GENERATOR & MODAL MANAGEMENT
      ========================================================================== */
   function disableBodyScroll() {
     document.body.style.overflow = 'hidden';
@@ -430,6 +433,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${loc.protocol}//${loc.host}${loc.pathname}`;
   }
 
+  function getCodeShareUrl() {
+    const url = new URL(getBaseUrl());
+    url.searchParams.set('code', currentSecretCode);
+    return url.toString();
+  }
+
   function updateSendModalData() {
     const partnerGreeting = appData.name ? `Hey ${appData.name}! 💖` : `Hey sweetheart! 💖`;
     const siteUrl = getBaseUrl();
@@ -439,9 +448,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnWhatsappCode) {
       btnWhatsappCode.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(whatsappMsg)}`;
     }
+
+    // UPDATE QR CODE IMAGE SRC
+    const targetUrl = getCodeShareUrl();
+    if (qrCodeImg) {
+      qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(targetUrl)}&color=ff0054&bgcolor=ffffff`;
+    }
   }
 
   if (btnRegenCode) btnRegenCode.addEventListener('click', generateRandomCode);
+
+  // QR Code Toggle
+  if (btnToggleQr) {
+    btnToggleQr.addEventListener('click', () => {
+      const isHidden = qrCodeContainer.classList.contains('hidden');
+      if (isHidden) {
+        qrCodeContainer.classList.remove('hidden');
+        btnToggleQr.innerHTML = `<i class="fa-solid fa-eye-slash"></i> Hide QR Code`;
+      } else {
+        qrCodeContainer.classList.add('hidden');
+        btnToggleQr.innerHTML = `<i class="fa-solid fa-qrcode"></i> Show QR Code`;
+      }
+    });
+  }
 
   if (btnCopyDirectLink) {
     btnCopyDirectLink.addEventListener('click', () => copyToClipboard(getBaseUrl(), 'Web link copied to clipboard! 📋'));
@@ -461,6 +490,8 @@ document.addEventListener('DOMContentLoaded', () => {
   btnOpenSendCard.addEventListener('click', openSendModal);
   btnCloseSendModal.addEventListener('click', () => {
     sendModal.classList.add('hidden');
+    if (qrCodeContainer) qrCodeContainer.classList.add('hidden');
+    if (btnToggleQr) btnToggleQr.innerHTML = `<i class="fa-solid fa-qrcode"></i> Show QR Code`;
     enableBodyScroll();
   });
 
@@ -478,7 +509,6 @@ document.addEventListener('DOMContentLoaded', () => {
     disableBodyScroll();
   }
 
-  // CREATE INVITATION BUTTON HANDLERS FOR NEW USERS
   if (btnCreateInvitationTop) btnCreateInvitationTop.addEventListener('click', openCustomizer);
   if (btnCreateInvitationFooter) btnCreateInvitationFooter.addEventListener('click', openCustomizer);
 

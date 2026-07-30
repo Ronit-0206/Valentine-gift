@@ -193,7 +193,7 @@
     </div>
   </div>
 
-  <!-- Send Invitation Modal -->
+  <!-- Send Invitation Modal (WhatsApp + QR Code + Copy Links) -->
   <div id="send-modal" class="modal-backdrop hidden">
     <div class="modal-card">
       <div class="modal-header">
@@ -202,19 +202,30 @@
       </div>
 
       <div class="modal-body">
-        <p class="modal-desc">Send this secret code to your Valentine so they can unlock your date plan!</p>
+        <p class="modal-desc">Send this secret code or QR code to your Valentine so they can unlock your date plan!</p>
         
         <div class="secret-code-display">
           <span class="code-label">YOUR SECRET CODE:</span>
           <strong class="code-value" id="generated-secret-code">RONI-7925</strong>
           <button id="btn-regen-code" class="icon-small-btn" title="Generate New Code"><i class="fa-solid fa-arrows-rotate"></i></button>
         </div>
+
+        <!-- Dynamic QR Code Section -->
+        <div class="qr-code-section hidden" id="qr-code-container">
+          <div class="qr-box">
+            <img id="qr-code-img" src="" alt="Valentine Invitation QR Code">
+          </div>
+          <p class="qr-hint"><i class="fa-solid fa-camera"></i> Scan with phone camera to open invitation instantly!</p>
+        </div>
         
         <div class="send-actions-container" style="display:flex; flex-direction:column; gap:10px;">
           <a id="btn-whatsapp-code" href="#" target="_blank" class="social-btn whatsapp-btn full-width">
             <i class="fa-brands fa-whatsapp"></i> Send via WhatsApp
           </a>
-          <button id="btn-copy-direct-link" class="btn-primary full-width">
+          <button id="btn-toggle-qr" class="btn-primary full-width">
+            <i class="fa-solid fa-qrcode"></i> Show QR Code
+          </button>
+          <button id="btn-copy-direct-link" class="btn-secondary full-width">
             <i class="fa-solid fa-link"></i> Copy Web Link
           </button>
           <button id="btn-copy-code-only" class="btn-secondary full-width">
