@@ -85,11 +85,40 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentSecretCode = 'LOVE-2026';
   let isNoBtnDetached = false;
 
+  // Funny Quotes & Slogans for Unfilled Inputs
+  const funnyVenueQuotes = [
+    "Secret Mystery Spot! Bring your appetite & cute smile 🤫🥂",
+    "Wherever your heart takes us! (Probably eating pizza on the couch 🍕)",
+    "Somewhere romantic where the food is good and vibes are cute! ✨",
+    "Under the stars... or under a cozy blanket! 💫",
+    "The fanciest place in town (Or a late night ice cream drive! 🍦)"
+  ];
+
+  const funnyTimeQuotes = [
+    "7:30 PM Sharp! (Don't be late, I get hangry ⏰)",
+    "Right now! (I'm literally counting down seconds ⏱️)",
+    "Whenever you look prettiest (so basically anytime!) 💕",
+    "Tonight! Dress up gorgeous 🥂✨",
+    "As soon as you say the word! 🚀💖"
+  ];
+
+  const funnyNoteQuotes = [
+    "I was too nervous to write a note, but just know you look absolutely gorgeous today! 🌹✨",
+    "Warning: Extreme cute behavior, stolen kisses, and non-stop smiling ahead! 😘🥂",
+    "No long speech needed... I just really, really adore you! 💖",
+    "You officially owe me a hug & a romantic date now! 🙈❤️",
+    "I promise to give you my last slice of pizza today! 🍕💖"
+  ];
+
+  function getRandomQuote(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
   const appData = {
     name: '',
-    hotel: 'The Royal Grand Hotel & Lounge',
-    time: '7:30 PM Today',
-    note: "Dress up gorgeous! I can't wait to see your cute smile today. 🥂🌹",
+    hotel: '',
+    time: '',
+    note: '',
     photos: []
   };
 
@@ -453,7 +482,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (itemSpecialNote) {
     itemSpecialNote.addEventListener('click', () => {
       playPopSound();
-      modalNoteText.textContent = appData.note || "Dress up gorgeous! I can't wait to see your cute smile today. 🥂🌹";
+      const currentNote = appData.note ? appData.note.trim() : getRandomQuote(funnyNoteQuotes);
+      modalNoteText.textContent = currentNote;
       modalNoteSig.textContent = appData.name ? `Forever Yours, ${appData.name} 💖` : `Forever Yours 💖`;
       noteModal.classList.remove('hidden');
       disableBodyScroll();
@@ -569,9 +599,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnSaveCustom.addEventListener('click', () => {
     appData.name = inputName.value.trim();
-    appData.hotel = inputHotel.value.trim() || 'The Royal Grand Hotel & Lounge';
-    appData.time = inputTime.value.trim() || '7:30 PM Today';
-    appData.note = inputNote.value.trim() || 'Dress up gorgeous!';
+    appData.hotel = inputHotel.value.trim();
+    appData.time = inputTime.value.trim();
+    appData.note = inputNote.value.trim();
 
     updateDisplayData();
     customizerModal.classList.add('hidden');
@@ -658,8 +688,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    resHotel.textContent = appData.hotel;
-    resTime.textContent = appData.time;
+    // IF UNFILLED, PICK RANDOM FUNNY QUOTES & SLOGANS
+    resHotel.textContent = appData.hotel ? appData.hotel : getRandomQuote(funnyVenueQuotes);
+    resTime.textContent = appData.time ? appData.time : getRandomQuote(funnyTimeQuotes);
 
     inputName.value = appData.name;
     inputHotel.value = appData.hotel;
