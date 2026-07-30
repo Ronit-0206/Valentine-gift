@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const resHotel = document.getElementById('res-hotel');
   const resTime = document.getElementById('res-time');
   const resNote = document.getElementById('res-note');
+  const polaroidGrid = document.getElementById('polaroid-grid');
+  const photoGallerySection = document.getElementById('photo-gallery-section');
 
   // Top Bar & Controls
   const btnMusic = document.getElementById('btn-music');
@@ -54,11 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const qrCodeContainer = document.getElementById('qr-code-container');
   const qrCodeImg = document.getElementById('qr-code-img');
 
-  // Form Inputs
+  // Form Inputs & Photo Upload
   const inputName = document.getElementById('input-name');
   const inputHotel = document.getElementById('input-hotel');
   const inputTime = document.getElementById('input-time');
   const inputNote = document.getElementById('input-note');
+  const inputPhotos = document.getElementById('input-photos');
+  const photoPreviewContainer = document.getElementById('photo-preview-container');
+
   const inputPasscode = document.getElementById('input-passcode');
   const btnApplyPasscode = document.getElementById('btn-apply-passcode');
 
@@ -78,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
     name: '',
     hotel: 'The Royal Grand Hotel & Lounge',
     time: '7:30 PM Today',
-    note: "Dress up gorgeous! I can't wait to see your cute smile today. 🥂🌹"
+    note: "Dress up gorgeous! I can't wait to see your cute smile today. 🥂🌹",
+    photos: []
   };
 
   const dodgePhrases = [
@@ -95,7 +101,32 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   /* ==========================================================================
-     1. CANVAS FLOATING HEART BALLOONS ENGINE
+     1. PHOTO UPLOAD & PREVIEW SYSTEM
+     ========================================================================== */
+  if (inputPhotos) {
+    inputPhotos.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files).slice(0, 4);
+      appData.photos = [];
+      photoPreviewContainer.innerHTML = '';
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const dataUrl = event.target.result;
+          appData.photos.push(dataUrl);
+
+          const img = document.createElement('img');
+          img.src = dataUrl;
+          img.className = 'preview-thumb';
+          photoPreviewContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+  }
+
+  /* ==========================================================================
+     2. CANVAS FLOATING HEART BALLOONS ENGINE
      ========================================================================== */
   function resizeCanvases() {
     balloonCanvas.width = window.innerWidth;
@@ -171,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
   animateBalloons();
 
   /* ==========================================================================
-     2. CONFETTI HEART BURST
+     3. CONFETTI HEART BURST
      ========================================================================== */
   class HeartConfetti {
     constructor(x, y) {
@@ -240,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
   animateConfetti();
 
   /* ==========================================================================
-     3. HIGH-FIDELITY REFINED AUDIO SYNTHESIZER
+     4. HIGH-FIDELITY REFINED AUDIO SYNTHESIZER
      ========================================================================== */
   function initAudio() {
     if (!audioCtx) {
@@ -330,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     4. ROOT-LEVEL FIXED DODGING ("NO" BUTTON NEVER GOES OUTSIDE SCREEN)
+     5. ROOT-LEVEL FIXED DODGING ("NO" BUTTON NEVER GOES OUTSIDE SCREEN)
      ========================================================================== */
   function dodgeNoButton(e) {
     if (e) {
@@ -383,18 +414,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     5. CLICKING YES OPENS THE "ENTER SECRET PASSCODE" MODAL WINDOW
+     6. CLICKING YES OPENS THE "ENTER SECRET PASSCODE" MODAL WINDOW
      ========================================================================== */
-  function handleYesClick(e) {
-    if (e) {
-      e.stopPropagation();
-    }
+  btnYes.addEventListener('click', (e) => {
+    e.stopPropagation();
     initAudio();
     playPopSound();
     openEnterCodeModal();
-  }
-
-  btnYes.addEventListener('click', handleYesClick);
+  });
 
   function revealCelebrationCard() {
     playCelebrationFanfare();
@@ -414,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     6. CREATE INVITATION, QR CODE GENERATOR & MODAL MANAGEMENT
+     7. CREATE INVITATION, QR CODE GENERATOR & MODAL MANAGEMENT
      ========================================================================== */
   function disableBodyScroll() {
     document.body.style.overflow = 'hidden';
@@ -536,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
     enableBodyScroll();
   });
 
-  // REVEAL CELEBRATION DATE CARD
+  // REVEAL CELEBRATION DATE CARD & RENDER PHOTOS
   btnApplyPasscode.addEventListener('click', () => {
     const code = inputPasscode.value.trim().toUpperCase();
     if (code) {
@@ -556,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     7. URL PARSER & DISPLAY UPDATER
+     8. URL PARSER & DISPLAY UPDATER (RENDERS POLAROID GALLERY)
      ========================================================================== */
   function parseUrlParams() {
     const params = new URLSearchParams(window.location.search);
@@ -614,6 +641,37 @@ document.addEventListener('DOMContentLoaded', () => {
     inputHotel.value = appData.hotel;
     inputTime.value = appData.time;
     inputNote.value = appData.note;
+
+    // RENDER POLAROID PHOTO GALLERY
+    renderPhotoGallery();
+  }
+
+  function renderPhotoGallery() {
+    if (!polaroidGrid) return;
+    polaroidGrid.innerHTML = '';
+
+    const photoList = (appData.photos && appData.photos.length > 0) 
+      ? appData.photos 
+      : [
+          'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&auto=format&fit=crop&q=80'
+        ];
+
+    if (photoList.length > 0) {
+      photoGallerySection.classList.remove('hidden');
+      photoList.forEach((src, idx) => {
+        const card = document.createElement('div');
+        card.className = 'polaroid-card';
+        card.innerHTML = `
+          <img src="${src}" alt="Romantic Memory ${idx + 1}">
+          <div class="polaroid-caption">Memory #${idx + 1} 💖</div>
+        `;
+        polaroidGrid.appendChild(card);
+      });
+    } else {
+      photoGallerySection.classList.add('hidden');
+    }
   }
 
   function escapeHTML(str) {

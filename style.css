@@ -685,6 +685,115 @@ body {
   font-weight: 600;
 }
 
+/* Photo Gallery & Upload Dropzone */
+.photo-gallery-section {
+  width: min(94%, 620px);
+  margin: 15px auto 15px auto;
+  text-align: center;
+}
+
+.gallery-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--accent-soft-pink);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  letter-spacing: 0.5px;
+}
+
+.polaroid-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.polaroid-card {
+  background: #ffffff;
+  padding: 10px 10px 22px 10px;
+  border-radius: 8px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  max-width: 140px;
+  flex: 1 1 120px;
+}
+
+.polaroid-card:nth-child(odd) { transform: rotate(-3deg); }
+.polaroid-card:nth-child(even) { transform: rotate(3deg); }
+
+.polaroid-card:hover {
+  transform: scale(1.08) rotate(0deg);
+  z-index: 20;
+  box-shadow: 0 20px 45px rgba(255, 0, 84, 0.4);
+}
+
+.polaroid-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.polaroid-caption {
+  margin-top: 8px;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: #2b1e1a;
+  font-weight: 700;
+}
+
+/* Upload Dropzone */
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px dashed rgba(255, 112, 166, 0.4);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.file-input-hidden { display: none; }
+
+.upload-btn {
+  background: linear-gradient(135deg, rgba(255, 0, 84, 0.3), rgba(255, 112, 166, 0.2));
+  border: 1px solid rgba(255, 112, 166, 0.5);
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.upload-hint { font-size: 0.72rem; color: var(--text-dim); }
+
+.photo-preview-grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.preview-thumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1.5px solid var(--accent-pink);
+}
+
 .share-social-btns { display: flex; gap: 8px; flex-direction: column; }
 .social-btn {
   width: 100%;

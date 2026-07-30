@@ -113,7 +113,7 @@
       </div>
     </div>
 
-    <!-- Success / Date Card (Clean, Opulent, Pure Romance - No Share Buttons) -->
+    <!-- Success / Date Card (Revealed after entering secret code) -->
     <div id="success-card" class="glass-card success-mode hidden">
       <div class="success-badge glow-badge">
         <i class="fa-solid fa-crown"></i> OFFICIAL DATE CONFIRMED 🎉
@@ -129,6 +129,14 @@
         I knew you would say YES! <span class="heart-emoji">💖✨</span>
       </h1>
       <p class="success-subtext" id="success-subtext">Get ready for an unforgettable romantic date! Here are your exclusive details:</p>
+
+      <!-- Romantic Photo Gallery Section -->
+      <div class="photo-gallery-section" id="photo-gallery-section">
+        <h3 class="gallery-title"><i class="fa-solid fa-heart-pulse"></i> Our Romantic Memories 📸</h3>
+        <div class="polaroid-grid" id="polaroid-grid">
+          <!-- Dynamically populated photos -->
+        </div>
+      </div>
 
       <!-- Date Details Container (Opulent Glass Card) -->
       <div class="date-details-box royal-date-box">
@@ -172,7 +180,7 @@
         <button id="btn-close-code-modal" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
-        <p class="modal-desc">Have a secret code from your Valentine? Enter it below to reveal your date details!</p>
+        <p class="modal-desc">Have a secret code from your Valentine? Enter it below to reveal your date details & photos!</p>
         <div class="form-group">
           <label for="input-passcode"><i class="fa-solid fa-lock"></i> Secret Passcode:</label>
           <input type="text" id="input-passcode" placeholder="E.G. LOVE-7842 OR EMMA-2026" style="text-transform: uppercase; font-weight:700; letter-spacing: 1px;">
@@ -195,7 +203,7 @@
       </div>
 
       <div class="modal-body">
-        <p class="modal-desc">Send this secret code or QR code to your Valentine so they can unlock your date plan!</p>
+        <p class="modal-desc">Send this secret code or QR code to your Valentine so they can unlock your date plan & photos!</p>
         
         <div class="secret-code-display">
           <span class="code-label">YOUR SECRET CODE:</span>
@@ -235,7 +243,7 @@
     </div>
   </div>
 
-  <!-- Customizer Modal for New Users -->
+  <!-- Customizer Modal for New Users (With Photo Upload) -->
   <div id="customizer-modal" class="modal-backdrop hidden">
     <div class="modal-card">
       <div class="modal-header">
@@ -247,6 +255,18 @@
         <div class="form-group">
           <label for="input-name"><i class="fa-solid fa-user-heart"></i> Partner's Name / Valentine's Name:</label>
           <input type="text" id="input-name" placeholder="e.g. Emma / Sweetheart" value="">
+        </div>
+
+        <div class="form-group">
+          <label for="input-photos"><i class="fa-solid fa-images"></i> Romantic Photos (Upload up to 4 photos):</label>
+          <div class="upload-dropzone">
+            <input type="file" id="input-photos" accept="image/*" multiple class="file-input-hidden">
+            <label for="input-photos" class="upload-btn">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Choose Photos
+            </label>
+            <span class="upload-hint">Upload romantic memories (max 4 images)</span>
+          </div>
+          <div id="photo-preview-container" class="photo-preview-grid"></div>
         </div>
 
         <div class="form-group">
