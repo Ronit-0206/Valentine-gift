@@ -24,8 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const resHotel = document.getElementById('res-hotel');
   const resTime = document.getElementById('res-time');
   const resNote = document.getElementById('res-note');
-  const polaroidGrid = document.getElementById('polaroid-grid');
-  const photoGallerySection = document.getElementById('photo-gallery-section');
+  const floatingPolaroidsBg = document.getElementById('floating-polaroids-bg');
 
   // Top Bar & Controls
   const btnMusic = document.getElementById('btn-music');
@@ -244,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const s = this.size;
       confettiCtx.moveTo(0, s * 0.3);
       confettiCtx.bezierCurveTo(-s / 2, -s / 2, -s, s * 0.3, 0, s);
-      confettiCtx.bezierCurveTo(s, s * 0.3, s / 2, -s / 2, 0, s * 0.3);
+      confettiCtx.bezierCurveTo(s, s * 0.3, s / 2, -s / 2, 0, s);
       confettiCtx.fillStyle = this.color;
       confettiCtx.fill();
 
@@ -437,6 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       successCard.classList.remove('hidden');
       setTimeout(() => successCard.classList.add('active'), 50);
+      renderFloatingBackgroundPolaroids();
     }, 350);
   }
 
@@ -563,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
     enableBodyScroll();
   });
 
-  // REVEAL CELEBRATION DATE CARD & RENDER PHOTOS
+  // REVEAL CELEBRATION DATE CARD & RENDER BACKGROUND POLAROIDS
   btnApplyPasscode.addEventListener('click', () => {
     const code = inputPasscode.value.trim().toUpperCase();
     if (code) {
@@ -583,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     8. URL PARSER & DISPLAY UPDATER (RENDERS POLAROID GALLERY)
+     8. BACKGROUND FLOATING POLAROID POP-UP SYSTEM
      ========================================================================== */
   function parseUrlParams() {
     const params = new URLSearchParams(window.location.search);
@@ -641,37 +641,48 @@ document.addEventListener('DOMContentLoaded', () => {
     inputHotel.value = appData.hotel;
     inputTime.value = appData.time;
     inputNote.value = appData.note;
-
-    // RENDER POLAROID PHOTO GALLERY
-    renderPhotoGallery();
   }
 
-  function renderPhotoGallery() {
-    if (!polaroidGrid) return;
-    polaroidGrid.innerHTML = '';
+  function renderFloatingBackgroundPolaroids() {
+    if (!floatingPolaroidsBg) return;
+    floatingPolaroidsBg.innerHTML = '';
 
     const photoList = (appData.photos && appData.photos.length > 0) 
       ? appData.photos 
       : [
           'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&auto=format&fit=crop&q=80',
           'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400&auto=format&fit=crop&q=80',
-          'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&auto=format&fit=crop&q=80'
+          'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&auto=format&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&auto=format&fit=crop&q=80'
         ];
 
-    if (photoList.length > 0) {
-      photoGallerySection.classList.remove('hidden');
-      photoList.forEach((src, idx) => {
-        const card = document.createElement('div');
-        card.className = 'polaroid-card';
-        card.innerHTML = `
-          <img src="${src}" alt="Romantic Memory ${idx + 1}">
-          <div class="polaroid-caption">Memory #${idx + 1} 💖</div>
-        `;
-        polaroidGrid.appendChild(card);
-      });
-    } else {
-      photoGallerySection.classList.add('hidden');
-    }
+    // Responsive positions surrounding the central card from behind
+    const positions = [
+      { top: '10%', left: '3%', delay: '0s' },
+      { top: '12%', right: '3%', delay: '0.4s' },
+      { bottom: '8%', left: '4%', delay: '0.8s' },
+      { bottom: '10%', right: '4%', delay: '1.2s' }
+    ];
+
+    photoList.forEach((src, idx) => {
+      const pos = positions[idx % positions.length];
+      const item = document.createElement('div');
+      item.className = 'bg-polaroid-item';
+      
+      let styleStr = `animation-delay: ${pos.delay};`;
+      if (pos.top) styleStr += `top: ${pos.top};`;
+      if (pos.bottom) styleStr += `bottom: ${pos.bottom};`;
+      if (pos.left) styleStr += `left: ${pos.left};`;
+      if (pos.right) styleStr += `right: ${pos.right};`;
+      item.setAttribute('style', styleStr);
+
+      item.innerHTML = `
+        <div class="polaroid-pin"><i class="fa-solid fa-heart"></i></div>
+        <img src="${src}" alt="Memory ${idx + 1}">
+        <div class="polaroid-caption-sm">Memory #${idx + 1} 💖</div>
+      `;
+      floatingPolaroidsBg.appendChild(item);
+    });
   }
 
   function escapeHTML(str) {

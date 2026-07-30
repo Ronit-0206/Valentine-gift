@@ -27,6 +27,9 @@
   <div class="ambient-light light-2"></div>
   <div class="ambient-light light-3"></div>
 
+  <!-- Background Floating Polaroids (Popping from behind) -->
+  <div id="floating-polaroids-bg" class="floating-polaroids-bg"></div>
+
   <!-- Top Action Bar -->
   <header class="top-bar">
     <button id="btn-create-invitation-top" class="icon-btn highlight-btn" title="Create Your Invitation" aria-label="Create Your Invitation">
@@ -129,14 +132,6 @@
         I knew you would say YES! <span class="heart-emoji">💖✨</span>
       </h1>
       <p class="success-subtext" id="success-subtext">Get ready for an unforgettable romantic date! Here are your exclusive details:</p>
-
-      <!-- Romantic Photo Gallery Section -->
-      <div class="photo-gallery-section" id="photo-gallery-section">
-        <h3 class="gallery-title"><i class="fa-solid fa-heart-pulse"></i> Our Romantic Memories 📸</h3>
-        <div class="polaroid-grid" id="polaroid-grid">
-          <!-- Dynamically populated photos -->
-        </div>
-      </div>
 
       <!-- Date Details Container (Opulent Glass Card) -->
       <div class="date-details-box royal-date-box">
@@ -243,7 +238,7 @@
     </div>
   </div>
 
-  <!-- Customizer Modal for New Users (With Photo Upload) -->
+  <!-- Customizer Modal for New Users -->
   <div id="customizer-modal" class="modal-backdrop hidden">
     <div class="modal-card">
       <div class="modal-header">
