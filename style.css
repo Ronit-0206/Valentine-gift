@@ -1062,6 +1062,75 @@ body {
   
   .top-bar { top: 12px; right: 12px; }
   .date-details-box { padding: 18px 20px; }
+
+  /* Mobile Alternating Floating Polaroids Movement */
+  .bg-polaroid-item {
+    width: min(190px, 52vw) !important;
+    padding: 10px 10px 18px 10px !important;
+    border-radius: 12px !important;
+    left: 50% !important;
+    transform-origin: center center;
+    animation: mobileAlternateFloat 16s ease-in-out infinite alternate !important;
+  }
+
+  .bg-polaroid-item img {
+    height: 145px !important;
+  }
+
+  .bg-polaroid-item .polaroid-caption-sm {
+    font-size: 1.1rem !important;
+    margin-top: 6px !important;
+  }
+
+  .bg-polaroid-item:nth-child(1) {
+    top: 5% !important;
+    animation-delay: 0s !important;
+  }
+
+  .bg-polaroid-item:nth-child(2) {
+    top: 58% !important;
+    animation-delay: 4s !important;
+  }
+
+  .bg-polaroid-item:nth-child(3) {
+    top: 14% !important;
+    animation-delay: 8s !important;
+  }
+
+  .bg-polaroid-item:nth-child(4) {
+    top: 64% !important;
+    animation-delay: 12s !important;
+  }
+}
+
+@keyframes mobileAlternateFloat {
+  0% {
+    transform: translateX(-105%) rotate(-5deg) scale(0.85);
+    opacity: 0.25;
+    z-index: 1;
+  }
+  25% {
+    transform: translateX(-50%) rotate(-2deg) scale(1.08);
+    opacity: 1;
+    z-index: 50;
+    box-shadow: 0 25px 60px rgba(255, 0, 84, 0.7);
+  }
+  50% {
+    transform: translateX(5%) rotate(4deg) scale(0.88);
+    opacity: 0.35;
+    z-index: 2;
+  }
+  75% {
+    transform: translateX(-50%) rotate(-3deg) scale(1.05);
+    opacity: 1;
+    z-index: 50;
+    box-shadow: 0 25px 60px rgba(255, 0, 84, 0.7);
+  }
+  100% {
+    transform: translateX(5%) rotate(5deg) scale(0.85);
+    opacity: 0.25;
+    z-index: 1;
+  }
 }
 
 @media (max-height: 660px) {
