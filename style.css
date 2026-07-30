@@ -1109,74 +1109,86 @@ body {
   .top-bar { top: 12px; right: 12px; }
   .date-details-box { padding: 18px 20px; }
 
-  /* Mobile Alternating Floating Polaroids Movement */
+  /* Mobile Floating Polaroids System - 100% Visible & Crisp on Phone Screens */
+  .floating-polaroids-bg {
+    z-index: 12 !important;
+    pointer-events: none;
+  }
+
   .bg-polaroid-item {
-    width: min(190px, 52vw) !important;
-    padding: 10px 10px 18px 10px !important;
-    border-radius: 12px !important;
-    left: 50% !important;
-    transform-origin: center center;
-    animation: mobileAlternateFloat 16s ease-in-out infinite alternate !important;
+    width: min(150px, 40vw) !important;
+    padding: 8px 8px 16px 8px !important;
+    border-radius: 10px !important;
+    pointer-events: auto !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 20px rgba(255, 0, 84, 0.5) !important;
+    left: auto !important;
   }
 
   .bg-polaroid-item img {
-    height: 145px !important;
+    height: 115px !important;
   }
 
   .bg-polaroid-item .polaroid-caption-sm {
-    font-size: 1.1rem !important;
-    margin-top: 6px !important;
+    font-size: 0.92rem !important;
+    margin-top: 4px !important;
   }
 
+  /* 4 Corner Spots for Mobile Screens */
   .bg-polaroid-item:nth-child(1) {
-    top: 5% !important;
-    animation-delay: 0s !important;
+    top: 60px !important;
+    left: 8px !important;
+    right: auto !important;
+    bottom: auto !important;
+    animation: mobileFloat1 8s ease-in-out infinite alternate !important;
   }
 
   .bg-polaroid-item:nth-child(2) {
-    top: 58% !important;
-    animation-delay: 4s !important;
+    top: 60px !important;
+    right: 8px !important;
+    left: auto !important;
+    bottom: auto !important;
+    animation: mobileFloat2 8s ease-in-out 1.5s infinite alternate !important;
   }
 
   .bg-polaroid-item:nth-child(3) {
-    top: 14% !important;
-    animation-delay: 8s !important;
+    bottom: 20px !important;
+    left: 8px !important;
+    top: auto !important;
+    right: auto !important;
+    animation: mobileFloat3 8s ease-in-out 3s infinite alternate !important;
   }
 
   .bg-polaroid-item:nth-child(4) {
-    top: 64% !important;
-    animation-delay: 12s !important;
+    bottom: 20px !important;
+    right: 8px !important;
+    top: auto !important;
+    left: auto !important;
+    animation: mobileFloat4 8s ease-in-out 4.5s infinite alternate !important;
   }
 }
 
-@keyframes mobileAlternateFloat {
-  0% {
-    transform: translateX(-105%) rotate(-5deg) scale(0.85);
-    opacity: 0.25;
-    z-index: 1;
-  }
-  25% {
-    transform: translateX(-50%) rotate(-2deg) scale(1.08);
-    opacity: 1;
-    z-index: 50;
-    box-shadow: 0 25px 60px rgba(255, 0, 84, 0.7);
-  }
-  50% {
-    transform: translateX(5%) rotate(4deg) scale(0.88);
-    opacity: 0.35;
-    z-index: 2;
-  }
-  75% {
-    transform: translateX(-50%) rotate(-3deg) scale(1.05);
-    opacity: 1;
-    z-index: 50;
-    box-shadow: 0 25px 60px rgba(255, 0, 84, 0.7);
-  }
-  100% {
-    transform: translateX(5%) rotate(5deg) scale(0.85);
-    opacity: 0.25;
-    z-index: 1;
-  }
+@keyframes mobileFloat1 {
+  0% { transform: translateY(0) rotate(-6deg) scale(0.95); opacity: 0.95; }
+  50% { transform: translateY(-8px) rotate(-2deg) scale(1.04); opacity: 1; }
+  100% { transform: translateY(6px) rotate(-8deg) scale(0.95); opacity: 0.95; }
+}
+
+@keyframes mobileFloat2 {
+  0% { transform: translateY(0) rotate(6deg) scale(0.95); opacity: 0.95; }
+  50% { transform: translateY(-10px) rotate(2deg) scale(1.04); opacity: 1; }
+  100% { transform: translateY(5px) rotate(8deg) scale(0.95); opacity: 0.95; }
+}
+
+@keyframes mobileFloat3 {
+  0% { transform: translateY(0) rotate(4deg) scale(0.95); opacity: 0.95; }
+  50% { transform: translateY(-6px) rotate(-3deg) scale(1.04); opacity: 1; }
+  100% { transform: translateY(8px) rotate(6deg) scale(0.95); opacity: 0.95; }
+}
+
+@keyframes mobileFloat4 {
+  0% { transform: translateY(0) rotate(-5deg) scale(0.95); opacity: 0.95; }
+  50% { transform: translateY(-12px) rotate(3deg) scale(1.04); opacity: 1; }
+  100% { transform: translateY(4px) rotate(-7deg) scale(0.95); opacity: 0.95; }
 }
 
 @media (max-height: 660px) {
