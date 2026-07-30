@@ -1109,86 +1109,86 @@ body {
   .top-bar { top: 12px; right: 12px; }
   .date-details-box { padding: 18px 20px; }
 
-  /* Mobile Floating Polaroids System - 100% Visible & Crisp on Phone Screens */
+  /* Mobile Floating Polaroids System - Floating Behind Text in Background */
   .floating-polaroids-bg {
-    z-index: 12 !important;
+    z-index: 2 !important;
     pointer-events: none;
   }
 
   .bg-polaroid-item {
-    width: min(150px, 40vw) !important;
-    padding: 8px 8px 16px 8px !important;
+    width: min(165px, 44vw) !important;
+    padding: 8px 8px 18px 8px !important;
     border-radius: 10px !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(255, 0, 84, 0.4) !important;
     pointer-events: auto !important;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 20px rgba(255, 0, 84, 0.5) !important;
     left: auto !important;
   }
 
   .bg-polaroid-item img {
-    height: 115px !important;
+    height: 125px !important;
   }
 
   .bg-polaroid-item .polaroid-caption-sm {
-    font-size: 0.92rem !important;
-    margin-top: 4px !important;
+    font-size: 0.95rem !important;
+    margin-top: 5px !important;
   }
 
-  /* 4 Corner Spots for Mobile Screens */
+  /* 4 Floating Background Polaroids Drifting Behind Text */
   .bg-polaroid-item:nth-child(1) {
-    top: 60px !important;
-    left: 8px !important;
+    top: 8% !important;
+    left: 2% !important;
     right: auto !important;
     bottom: auto !important;
-    animation: mobileFloat1 8s ease-in-out infinite alternate !important;
+    animation: mobileBgFloat1 12s ease-in-out infinite alternate !important;
   }
 
   .bg-polaroid-item:nth-child(2) {
-    top: 60px !important;
-    right: 8px !important;
+    top: 10% !important;
+    right: 2% !important;
     left: auto !important;
     bottom: auto !important;
-    animation: mobileFloat2 8s ease-in-out 1.5s infinite alternate !important;
+    animation: mobileBgFloat2 12s ease-in-out 2s infinite alternate !important;
   }
 
   .bg-polaroid-item:nth-child(3) {
-    bottom: 20px !important;
-    left: 8px !important;
+    bottom: 6% !important;
+    left: 3% !important;
     top: auto !important;
     right: auto !important;
-    animation: mobileFloat3 8s ease-in-out 3s infinite alternate !important;
+    animation: mobileBgFloat3 12s ease-in-out 4s infinite alternate !important;
   }
 
   .bg-polaroid-item:nth-child(4) {
-    bottom: 20px !important;
-    right: 8px !important;
+    bottom: 8% !important;
+    right: 3% !important;
     top: auto !important;
     left: auto !important;
-    animation: mobileFloat4 8s ease-in-out 4.5s infinite alternate !important;
+    animation: mobileBgFloat4 12s ease-in-out 6s infinite alternate !important;
   }
 }
 
-@keyframes mobileFloat1 {
-  0% { transform: translateY(0) rotate(-6deg) scale(0.95); opacity: 0.95; }
-  50% { transform: translateY(-8px) rotate(-2deg) scale(1.04); opacity: 1; }
-  100% { transform: translateY(6px) rotate(-8deg) scale(0.95); opacity: 0.95; }
+@keyframes mobileBgFloat1 {
+  0% { transform: translateY(0) rotate(-7deg) scale(0.92); opacity: 0.85; }
+  50% { transform: translateY(-12px) rotate(-3deg) scale(1.02); opacity: 0.95; }
+  100% { transform: translateY(10px) rotate(-9deg) scale(0.92); opacity: 0.85; }
 }
 
-@keyframes mobileFloat2 {
-  0% { transform: translateY(0) rotate(6deg) scale(0.95); opacity: 0.95; }
-  50% { transform: translateY(-10px) rotate(2deg) scale(1.04); opacity: 1; }
-  100% { transform: translateY(5px) rotate(8deg) scale(0.95); opacity: 0.95; }
+@keyframes mobileBgFloat2 {
+  0% { transform: translateY(0) rotate(7deg) scale(0.92); opacity: 0.85; }
+  50% { transform: translateY(-14px) rotate(3deg) scale(1.02); opacity: 0.95; }
+  100% { transform: translateY(8px) rotate(9deg) scale(0.92); opacity: 0.85; }
 }
 
-@keyframes mobileFloat3 {
-  0% { transform: translateY(0) rotate(4deg) scale(0.95); opacity: 0.95; }
-  50% { transform: translateY(-6px) rotate(-3deg) scale(1.04); opacity: 1; }
-  100% { transform: translateY(8px) rotate(6deg) scale(0.95); opacity: 0.95; }
+@keyframes mobileBgFloat3 {
+  0% { transform: translateY(0) rotate(5deg) scale(0.92); opacity: 0.85; }
+  50% { transform: translateY(-10px) rotate(-2deg) scale(1.02); opacity: 0.95; }
+  100% { transform: translateY(12px) rotate(7deg) scale(0.92); opacity: 0.85; }
 }
 
-@keyframes mobileFloat4 {
-  0% { transform: translateY(0) rotate(-5deg) scale(0.95); opacity: 0.95; }
-  50% { transform: translateY(-12px) rotate(3deg) scale(1.04); opacity: 1; }
-  100% { transform: translateY(4px) rotate(-7deg) scale(0.95); opacity: 0.95; }
+@keyframes mobileBgFloat4 {
+  0% { transform: translateY(0) rotate(-6deg) scale(0.92); opacity: 0.85; }
+  50% { transform: translateY(-15px) rotate(4deg) scale(1.02); opacity: 0.95; }
+  100% { transform: translateY(6px) rotate(-8deg) scale(0.92); opacity: 0.85; }
 }
 
 @media (max-height: 660px) {
